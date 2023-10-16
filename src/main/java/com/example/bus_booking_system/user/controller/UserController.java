@@ -19,8 +19,10 @@ public class UserController {
     private final BookingService bookingService;
 
 
+
+    // Get Buses Details with src and dst along with eta and distance
     @GetMapping("/getBusesDetails")
-    public ResponseEntity<?> getBusesDetails(@RequestBody Location userLocation, @RequestParam Long srcId, @RequestParam Long dstId) {
+    public ResponseEntity<?> getBusesDetails(@RequestBody Location userLocation, @RequestParam String srcId, @RequestParam String dstId) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(bookingService.getBusesDetails(srcId, dstId).stream().sorted(Comparator.comparing(c -> (int) (getDistance(c.getSrc(), userLocation)))));
     }
 

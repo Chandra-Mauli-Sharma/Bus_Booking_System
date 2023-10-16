@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LocationRepository extends MongoRepository<Location,Long> {
-    Location getLocationById(Long id);
+    Location getLocationById(String id);
 }

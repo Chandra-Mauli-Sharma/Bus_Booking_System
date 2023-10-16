@@ -23,7 +23,7 @@ public class BookingService {
     private final LocationRepository locationRepository;
 
 
-    public List<Bus> getBusesDetails(Long src, Long dst) {
+    public List<Bus> getBusesDetails(String src, String dst) {
         var srcLocation = locationRepository.getLocationById(src);
         var dstLocation = locationRepository.getLocationById(dst);
         return busRepository.findBusesBySrcAndDst(srcLocation, dstLocation);
