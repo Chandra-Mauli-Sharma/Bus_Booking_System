@@ -1,0 +1,166 @@
+openapi: "3.0.3"
+info:
+  title: "Bus_Booking_System API"
+  description: "Bus_Booking_System API"
+  version: "1.0.0"
+servers:
+  - url: "https://Bus_Booking_System"
+paths:
+  /admin/addBus:
+    post:
+      summary: "POST admin/addBus"
+      operationId: "addBus"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Bus"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /admin/deleteBus:
+    post:
+      summary: "POST admin/deleteBus"
+      operationId: "deleteBus"
+      parameters:
+        - name: "busId"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /admin/updateBus:
+    post:
+      summary: "POST admin/updateBus"
+      operationId: "updateBus"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Bus"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /user/bookSeat:
+    post:
+      summary: "POST user/bookSeat"
+      operationId: "bookSeat"
+      parameters:
+        - name: "busId"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+        - name: "seatId"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /user/cancel:
+    post:
+      summary: "POST user/cancel"
+      operationId: "cancel"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /user/checkAvailabilty:
+    get:
+      summary: "GET user/checkAvailabilty"
+      operationId: "checkAvailabilty"
+      parameters:
+        - name: "busId"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /user/getBusesDetails:
+    get:
+      summary: "GET user/getBusesDetails"
+      operationId: "getBusesDetails"
+      parameters:
+        - name: "srcId"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "dstId"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Location"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+components:
+  schemas:
+    Location:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        lat:
+          type: "number"
+          format: "double"
+        lng:
+          type: "number"
+          format: "double"
+    Bus:
+      type: "object"
+      properties:
+        seats:
+          type: "string"
+        id:
+          type: "string"
+        name:
+          type: "string"
+        src:
+          $ref: "#/components/schemas/Location"
+        dst:
+          $ref: "#/components/schemas/Location"

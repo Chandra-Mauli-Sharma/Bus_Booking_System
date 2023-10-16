@@ -1,2 +1,28 @@
-package com.example.bus_booking_system.admin.model;public class Bus {
+package com.example.bus_booking_system.admin.model;
+
+import com.example.bus_booking_system.location.Location;
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Map;
+
+@Document
+@Data
+public class Bus {
+    Map<String, Boolean> seats;
+    @Id
+    private String id;
+    private String name;
+
+    @DBRef
+    private Location src;
+
+    @DBRef
+    private Location dst;
 }
+
+
+
+

@@ -1,4 +1,4 @@
-package com.example.bus_booking_system.user.model;
+package com.example.bus_booking_system.location;
 
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;

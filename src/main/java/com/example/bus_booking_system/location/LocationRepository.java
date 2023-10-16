@@ -1,8 +1,7 @@
-package com.example.bus_booking_system.user.repository;
+package com.example.bus_booking_system.location;
 
-import com.example.bus_booking_system.user.model.Booking;
-import com.example.bus_booking_system.user.model.Location;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Repository;
 
 @Repository
