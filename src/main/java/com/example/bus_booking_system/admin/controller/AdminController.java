@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
@@ -27,5 +29,10 @@ public class AdminController {
     @PostMapping("/deleteBus")
     ResponseEntity<?> deleteBus(@RequestParam String busId) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.deleteBus(busId));
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> exceptionHandler(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", e.getMessage()));
     }
 }

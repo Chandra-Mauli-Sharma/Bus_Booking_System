@@ -19,7 +19,6 @@ public class UserController {
     private final BookingService bookingService;
 
 
-
     // Get Buses Details with src and dst along with eta and distance
     @GetMapping("/getBusesDetails")
     public ResponseEntity<?> getBusesDetails(@RequestBody Location userLocation, @RequestParam String srcId, @RequestParam String dstId) {
@@ -43,5 +42,10 @@ public class UserController {
 
     public double getDistance(Location s, Location t) {
         return Math.sqrt(Math.pow(s.getLat() - t.getLat(), 2) + Math.pow(s.getLng() - t.getLng(), 2));
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> exceptionHandler(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", e.getMessage()));
     }
 }

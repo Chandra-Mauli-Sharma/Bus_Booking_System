@@ -14,7 +14,6 @@ public class Booking {
     @Id
     private String id;
     private Long seatId = UUID.randomUUID().node();
-
     @DBRef
     private Bus bus;
 }
