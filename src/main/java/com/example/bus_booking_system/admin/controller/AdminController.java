@@ -26,7 +26,7 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.updateBus(bus));
     }
 
-    @PostMapping("/deleteBus")
+    @DeleteMapping("/deleteBus")
     ResponseEntity<?> deleteBus(@RequestParam String busId) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.deleteBus(busId));
     }

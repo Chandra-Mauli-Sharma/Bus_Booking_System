@@ -30,11 +30,11 @@ public class BookingService {
     }
 
 
-    public Object seatBooking(String busId, Long seatId) {
+    public Object seatBooking(String busId, String seatId) {
         var bus = busRepository.getBusById(busId);
         var seats = bus.getSeats();
 
-        if (seats.get(seatId.toString())) return Map.of("message", "Seat Already Booked");
+        if (seats.get(seatId)) return Map.of("message", "Seat Already Booked");
 
         if ((seats.entrySet().stream().filter(Map.Entry::getValue).toList().size() / seats.entrySet().size()) * 100 >= 80)
             return Map.of("message", "Bus is at 80% occupancy. Book Another bus.");
@@ -43,12 +43,12 @@ public class BookingService {
         var booking = new Booking();
         booking.setSeatId(seatId);
         booking.setBus(busRepository.getBusById(busId));
-        seats.put(seatId.toString(), true);
+        seats.put(seatId, true);
         bus.setSeats(seats);
         busRepository.save(bus);
 
-
-        return bookingRepository.save(booking);
+        bookingRepository.save(booking);
+        return Map.of("message", "Seat Booked");
     }
 
     public Integer getNumberOfSeats(String id) {

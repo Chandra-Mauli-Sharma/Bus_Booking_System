@@ -19,11 +19,27 @@ public class AdminService {
     }
 
     public Bus updateBus(Bus bus) {
-        return adminRepository.save(bus);
+        var newBus=adminRepository.getBusById(bus.getId());
+        if (bus.getSeats()!=null){
+            newBus.setSeats(bus.getSeats());
+        }
+
+        if (bus.getSrc()!=null){
+            newBus.setSrc(bus.getSrc());
+        }
+
+        if (bus.getDst()!=null){
+            newBus.setDst(bus.getDst());
+        }
+
+        if (bus.getName()!=null){
+            newBus.setName(bus.getName());
+        }
+        return adminRepository.save(newBus);
     }
 
-    public ResponseEntity<?> deleteBus(String busID) {
+    public Object deleteBus(String busID) {
         adminRepository.deleteBusById(busID);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(Map.of("message", "Bus Details Deleted"));
+        return Map.of("message", "Bus Details Deleted");
     }
 }

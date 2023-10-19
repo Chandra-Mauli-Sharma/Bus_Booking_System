@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Booking {
     @Id
     private String id;
-    private Long seatId = UUID.randomUUID().node();
+    private String seatId;
     @DBRef
     private Bus bus;
 }

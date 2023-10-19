@@ -21,6 +21,9 @@ public class Bus {
 
     @DBRef
     private Location dst;
+
+    private String eta;
+    private double distance;
 }
 
 

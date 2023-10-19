@@ -31,11 +31,11 @@ public class UserController {
     }
 
     @PostMapping("/bookSeat")
-    public ResponseEntity<?> bookSeat(@RequestParam String busId, @RequestParam Long seatId) {
+    public ResponseEntity<?> bookSeat(@RequestParam String busId, @RequestParam String seatId) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(bookingService.seatBooking(busId, seatId));
     }
 
-    @PostMapping("/cancel")
+    @DeleteMapping("/cancel")
     public ResponseEntity<?> cancel(String bookingId) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(bookingService.cancelBooking(bookingId));
     }
