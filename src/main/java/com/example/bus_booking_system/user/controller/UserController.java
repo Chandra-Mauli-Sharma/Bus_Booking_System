@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Comparator;
 import java.util.Map;
 
-@RestController
-@RequestMapping("/user")
+@RestControllerAdvice
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -27,24 +27,39 @@ public class UserController {
 
     @GetMapping("/checkAvailabilty")
     public ResponseEntity<?> checkAvailabilty(@RequestParam String busId) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(Map.of("total_seats", bookingService.getNumberOfSeats(busId), "available_seats", bookingService.getAvailableNumberOfSeats(busId)));
+        var availableSeats = bookingService.getAvailableNumberOfSeats(busId);
+        var noOfSeats = bookingService.getNumberOfSeats(busId);
+        if (availableSeats == null || noOfSeats == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Bus missing"));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(Map.of("total_seats", noOfSeats, "available_seats", availableSeats));
     }
 
     @PostMapping("/bookSeat")
     public ResponseEntity<?> bookSeat(@RequestParam String busId, @RequestParam String seatId) {
+        if (busId == null || seatId == null || busId.isEmpty() || seatId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Invalid request parameters"));
+        }
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(bookingService.seatBooking(busId, seatId));
     }
 
-    @DeleteMapping("/cancel")
-    public ResponseEntity<?> cancel(String bookingId) {
+    @DeleteMapping("/cancel/{bookingId}")
+    public ResponseEntity<?> cancel(@PathVariable String bookingId) {
+        if (bookingId == null || bookingId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Invalid booking ID"));
+        }
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(bookingService.cancelBooking(bookingId));
     }
 
     public double getDistance(Location s, Location t) {
-        return Math.sqrt(Math.pow(s.getLat() - t.getLat(), 2) + Math.pow(s.getLng() - t.getLng(), 2));
+        double R = 6371;
+        double dLat = Math.toRadians(t.getLat() - s.getLat());
+        double dLon = Math.toRadians(t.getLng() - s.getLng());
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(s.getLat()) * Math.cos(t.getLat()) * Math.cos(dLon);
+        double b = Math.sqrt(1 - a);
+        return R * b;
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(Exception.class)
     public ResponseEntity<?> exceptionHandler(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", e.getMessage()));
     }

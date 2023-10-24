@@ -20,26 +20,28 @@ public class AdminService {
 
     public Bus updateBus(Bus bus) {
         var newBus=adminRepository.getBusById(bus.getId());
-        if (bus.getSeats()!=null){
-            newBus.setSeats(bus.getSeats());
-        }
+        newBus.ifPresent(b->{
+            if (bus.getSeats()!=null){
+                b.setSeats(bus.getSeats());
+            }
 
-        if (bus.getSrc()!=null){
-            newBus.setSrc(bus.getSrc());
-        }
+            if (bus.getSrc()!=null){
+                b.setSrc(bus.getSrc());
+            }
 
-        if (bus.getDst()!=null){
-            newBus.setDst(bus.getDst());
-        }
+            if (bus.getDst()!=null){
+                b.setDst(bus.getDst());
+            }
 
-        if (bus.getName()!=null){
-            newBus.setName(bus.getName());
-        }
-        return adminRepository.save(newBus);
+            if (bus.getName()!=null){
+                b.setName(bus.getName());
+            }
+        });
+        return newBus.map(adminRepository::save).orElse(null);
     }
 
     public Object deleteBus(String busID) {
-        adminRepository.deleteBusById(busID);
+        var buses=adminRepository.deleteBusById(busID);
         return Map.of("message", "Bus Details Deleted");
     }
 }

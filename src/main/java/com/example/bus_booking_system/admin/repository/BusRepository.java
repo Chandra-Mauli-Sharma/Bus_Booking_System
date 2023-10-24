@@ -7,13 +7,14 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BusRepository extends MongoRepository<Bus, Long> {
-    void deleteBusById(String busID);
+    int deleteBusById(String busID);
 
     List<Bus> findBusesBySrcAndDst(Location src, Location dst);
 
 
-    Bus getBusById(String id);
+    Optional<Bus> getBusById(String id);
 }

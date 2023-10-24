@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@RestController
-@RequestMapping("/admin")
+@RestControllerAdvice
+@RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
     private final AdminService service;
@@ -26,12 +26,12 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.updateBus(bus));
     }
 
-    @DeleteMapping("/deleteBus")
-    ResponseEntity<?> deleteBus(@RequestParam String busId) {
+    @DeleteMapping("/deleteBus/{busId}")
+    ResponseEntity<?> deleteBus(@PathVariable String busId) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.deleteBus(busId));
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(Exception.class)
     public ResponseEntity<?> exceptionHandler(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", e.getMessage()));
     }
