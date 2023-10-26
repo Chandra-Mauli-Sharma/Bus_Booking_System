@@ -14,6 +14,9 @@ public class Booking {
     @Id
     private String id;
     private String seatId;
+
+    private String userId;
+
     @DBRef
     private Bus bus;
 }

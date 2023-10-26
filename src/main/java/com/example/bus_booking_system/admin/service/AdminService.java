@@ -36,6 +36,10 @@ public class AdminService {
             if (bus.getName()!=null){
                 b.setName(bus.getName());
             }
+
+            if(bus.getDaysOfOperation()!=null){
+                b.setDaysOfOperation(bus.getDaysOfOperation());
+            }
         });
         return newBus.map(adminRepository::save).orElse(null);
     }

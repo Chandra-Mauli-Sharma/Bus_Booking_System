@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 import java.util.Map;
 
 @Document
@@ -24,6 +25,8 @@ public class Bus {
 
     private String eta;
     private double distance;
+
+    private List<Integer> daysOfOperation;
 }
 
 

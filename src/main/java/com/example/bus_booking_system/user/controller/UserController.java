@@ -20,9 +20,9 @@ public class UserController {
 
 
     // Get Buses Details with src and dst along with eta and distance
-    @GetMapping("/getBusesDetails")
-    public ResponseEntity<?> getBusesDetails(@RequestBody Location userLocation, @RequestParam String srcId, @RequestParam String dstId) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(bookingService.getBusesDetails(srcId, dstId).stream().sorted(Comparator.comparing(c -> (getDistance(c.getSrc(), userLocation)))));
+    @GetMapping("/getBusesDetails/{date}")
+    public ResponseEntity<?> getBusesDetails(@RequestBody Location userLocation, @RequestParam String srcId, @RequestParam String dstId,@PathVariable Long date) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(bookingService.getBusesDetails(srcId, dstId,date).stream().sorted(Comparator.comparing(c -> (getDistance(c.getSrc(), userLocation)))));
     }
 
     @GetMapping("/checkAvailabilty")
@@ -34,12 +34,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(Map.of("total_seats", noOfSeats, "available_seats", availableSeats));
     }
 
-    @PostMapping("/bookSeat")
-    public ResponseEntity<?> bookSeat(@RequestParam String busId, @RequestParam String seatId) {
+    @PostMapping("/bookSeat/{userID}")
+    public ResponseEntity<?> bookSeat(@RequestParam String busId, @RequestParam String seatId,@PathVariable String userID) {
         if (busId == null || seatId == null || busId.isEmpty() || seatId.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Invalid request parameters"));
         }
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(bookingService.seatBooking(busId, seatId));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(bookingService.seatBooking(busId, seatId,userID));
     }
 
     @DeleteMapping("/cancel/{bookingId}")
@@ -48,6 +48,11 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Invalid booking ID"));
         }
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(bookingService.cancelBooking(bookingId));
+    }
+
+    @GetMapping("/getAllBooking/{uid}")
+    ResponseEntity<?> getAllBooking(@PathVariable String uid){
+        return ResponseEntity.status(HttpStatus.FOUND).body(bookingService.getAllBooking(uid));
     }
 
     public double getDistance(Location s, Location t) {

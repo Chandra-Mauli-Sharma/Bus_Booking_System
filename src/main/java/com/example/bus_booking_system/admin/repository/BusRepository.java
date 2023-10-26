@@ -15,6 +15,5 @@ public interface BusRepository extends MongoRepository<Bus, Long> {
 
     List<Bus> findBusesBySrcAndDst(Location src, Location dst);
 
-
     Optional<Bus> getBusById(String id);
 }
