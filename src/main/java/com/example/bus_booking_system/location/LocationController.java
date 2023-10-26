@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@RestControllerAdvice
+@RestController
 @RequestMapping("/api/location")
 @RequiredArgsConstructor
 public class LocationController {

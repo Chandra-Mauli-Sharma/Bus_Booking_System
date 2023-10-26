@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Comparator;
 import java.util.Map;
 
-@RestControllerAdvice
+@RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
@@ -22,7 +22,7 @@ public class UserController {
     // Get Buses Details with src and dst along with eta and distance
     @GetMapping("/getBusesDetails")
     public ResponseEntity<?> getBusesDetails(@RequestBody Location userLocation, @RequestParam String srcId, @RequestParam String dstId) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(bookingService.getBusesDetails(srcId, dstId).stream().sorted(Comparator.comparing(c -> (int) (getDistance(c.getSrc(), userLocation)))));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(bookingService.getBusesDetails(srcId, dstId).stream().sorted(Comparator.comparing(c -> (getDistance(c.getSrc(), userLocation)))));
     }
 
     @GetMapping("/checkAvailabilty")
